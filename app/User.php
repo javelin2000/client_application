@@ -5,6 +5,7 @@ namespace App;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Hash;
 
 class User extends Authenticatable
 {
@@ -16,8 +17,22 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name',
+        'email',
+        'password',
+        'surname',
+        'date_of_birth',
+        'phone_number',
+
+        'address',
+        'country',
+        'trading_account_number',
+        'balance',
+        'open_trades',
+        'close_trades',
     ];
+
+    protected $table = 'Clients';
 
     /**
      * The attributes that should be hidden for arrays.
@@ -34,6 +49,26 @@ class User extends Authenticatable
      * @var array
      */
     protected $casts = [
-        'email_verified_at' => 'datetime',
+        'date_of_birth',
     ];
+
+    /**
+     * @param null $value
+     */
+    public function setPasswordAttribute($value = null)
+    {
+        if ($value){
+            $this->attributes['password'] = Hash::make($value);
+        } else {
+            $this->attributes['password'] = Hash::make('secret');
+        }
+    }
+
+    /**
+     * @return |null
+     */
+    public function getPasswordAttribute()
+    {
+        return null;
+    }
 }

@@ -12,5 +12,12 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect('dashboard');
+});
+
+Auth::routes();
+
+Route::prefix('dashboard')->middleware('auth')->group(function (){
+    Route::get('', 'UserController@create')->name('dashboard.create');
+    Route::post('', 'UserController@store')->name('dashboard.store');
 });
